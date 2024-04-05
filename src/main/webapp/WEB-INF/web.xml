@@ -26,6 +26,32 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>controller.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Book</servlet-name>
+        <servlet-class>controller.BookServlet</servlet-class>
+        <multipart-config>
+            <max-file-size>2097152</max-file-size> <!-- maximum file size allowed (in bytes) -->
+            <max-request-size>4194304</max-request-size> <!-- maximum request size allowed (in bytes) -->
+            <file-size-threshold>0</file-size-threshold> <!-- size threshold after which files will be written to disk -->
+        </multipart-config>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Book</servlet-name>
+        <url-pattern>/book</url-pattern>
+    </servlet-mapping>
+
+    
+    
+    
     <context-param>
         <param-name>DB_URL</param-name>
         <param-value>jdbc:mysql://localhost:3306/bookstore</param-value>
@@ -45,4 +71,13 @@
         <param-name>DB_PASSWORD</param-name>
         <param-value>root</param-value>
     </context-param>
+
+    <context-param>
+        <param-name>image-upload</param-name>
+        <param-value>webapp/</param-value>
+    </context-param>
+
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
 </web-app>

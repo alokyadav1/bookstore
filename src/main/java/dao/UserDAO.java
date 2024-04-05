@@ -32,10 +32,10 @@ public class UserDAO {
         statement.setString(2, password);
         ResultSet rs = statement.executeQuery();
         if(rs.next()){
+            int userID = rs.getInt("userID");
             String userName = rs.getString("username");
             String userEmail = rs.getString("email");
-            String userPassword = rs.getString("password");
-            return new User(userName, userEmail, userPassword);
+            return new User(userID, userName, userEmail);
         }
         return null;
     }

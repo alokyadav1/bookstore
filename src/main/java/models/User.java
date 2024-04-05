@@ -1,14 +1,24 @@
 package models;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String username;
     private String email;
     private String password;
+
+    private int userID;
 
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public User(int userID, String username, String email) {
+        this.userID = userID;
+        this.username = username;
+        this.email = email;
     }
 
     public String getUsername() {
@@ -35,5 +45,7 @@ public class User {
         this.password = password;
     }
 
-
+    public int getUserID() {
+        return userID;
+    }
 }

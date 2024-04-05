@@ -32,6 +32,7 @@ public class UserServlet extends HttpServlet {
             boolean success = UserDAO.registerUser(user);
             if (success){
                 HttpSession session = req.getSession();
+                // look into this when registering userID is not available
                 session.setAttribute("email", user.getEmail());
                 RequestDispatcher dispatcher = req.getRequestDispatcher("dashboard.jsp");
                 dispatcher.forward(req, resp);
@@ -47,7 +48,7 @@ public class UserServlet extends HttpServlet {
                 if(user != null){
                     System.out.println("login success");
                     HttpSession session = req.getSession();
-                    session.setAttribute("email", user.getEmail());
+                    session.setAttribute("user", user);
                     RequestDispatcher dispatcher = req.getRequestDispatcher("dashboard.jsp");
                     dispatcher.forward(req, resp);
                 } else {
