@@ -52,4 +52,20 @@ public class CartDAO {
             return cart;
         } else return null;
     }
+
+    public static boolean updateItemQuantity(int userID, int bookID, int quantity) throws SQLException {
+        if(quantity <= 0) return false;
+        String q = "UPDATE cart SET quantity = ? where userID = ? AND bookID = ?";
+        int rowsAffected = 0;
+        try{
+            PreparedStatement ps = con.prepareStatement(q);
+            ps.setInt(1, quantity);
+            ps.setInt(2, userID);
+            ps.setInt(3, bookID);
+            rowsAffected = ps.executeUpdate();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return rowsAffected > 0;
+    }
 }

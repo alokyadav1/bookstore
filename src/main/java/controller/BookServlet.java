@@ -21,7 +21,6 @@ public class BookServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
 
         String title = req.getParameter("title");
         String desc = req.getParameter("description");
@@ -53,7 +52,6 @@ public class BookServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
 
         int bookID = Integer.parseInt(req.getParameter("id"));
         try {
@@ -80,7 +78,6 @@ public class BookServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
 
         int bookID = Integer.parseInt(req.getParameter("id"));
         try{

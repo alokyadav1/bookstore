@@ -34,9 +34,15 @@ public class UserServlet extends HttpServlet {
                 HttpSession session = req.getSession();
                 // look into this when registering userID is not available
                 session.setAttribute("email", user.getEmail());
+                resp.setStatus(HttpServletResponse.SC_OK);
+                resp.getWriter().write("success");
+
                 RequestDispatcher dispatcher = req.getRequestDispatcher("dashboard.jsp");
                 dispatcher.forward(req, resp);
             } else {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.getWriter().write("failed");
+
                 RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
                 dispatcher.forward(req, resp);
             }
@@ -49,10 +55,17 @@ public class UserServlet extends HttpServlet {
                     System.out.println("login success");
                     HttpSession session = req.getSession();
                     session.setAttribute("user", user);
+
+                    resp.setStatus(HttpServletResponse.SC_OK);
+                    resp.getWriter().write("success");
+
                     RequestDispatcher dispatcher = req.getRequestDispatcher("dashboard.jsp");
                     dispatcher.forward(req, resp);
                 } else {
                     System.out.println("login failed");
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    resp.getWriter().write("failed");
+
                     RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
                     dispatcher.forward(req, resp);
                 }
