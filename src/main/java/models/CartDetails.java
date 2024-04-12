@@ -10,7 +10,8 @@ public class CartDetails {
     String ISBN;
     int quantity = 1;
 
-    public CartDetails(double price, double rating, String title, String description, String author, String ISBN, int quantity) {
+    public CartDetails(int bookID, double price, double rating, String title, String description, String author, String ISBN, int quantity) {
+        this.id = bookID;
         this.price = price;
         this.rating = rating;
         this.title = title;
@@ -18,6 +19,10 @@ public class CartDetails {
         this.author = author;
         this.ISBN = ISBN;
         this.quantity = quantity;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public double getPrice() {

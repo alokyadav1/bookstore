@@ -3,11 +3,14 @@ package dao;
 import jakarta.servlet.ServletContext;
 import models.Cart;
 import models.CartDetails;
+import models.OrderDetails;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CartDAO {
 
@@ -30,8 +33,9 @@ public class CartDAO {
         return rowsAffected > 0;
     }
 
-    public static CartDetails getCartItems(int userID) throws SQLException {
-        String q = "SELECT title, description, author, price, ISBN, rating, quantity " +
+    public static List<CartDetails> getCartItems(int userID) throws SQLException {
+        List<CartDetails> cartDetails = new ArrayList<>();
+        String q = "SELECT book.bookID, title, description, author, price, ISBN, rating, quantity " +
                     "FROM book INNER JOIN cart " +
                     "ON book.bookID = cart.bookID "+
                     "WHERE cart.userID = ?";
@@ -39,7 +43,8 @@ public class CartDAO {
         // complete this.
         ps.setInt(1, userID);
         ResultSet rs =  ps.executeQuery();
-        if(rs.next()){
+        while(rs.next()){
+            int bookID = rs.getInt("bookID");
             String title = rs.getString("title");
             String description = rs.getString("description");
             String author = rs.getString("author");
@@ -48,9 +53,10 @@ public class CartDAO {
             double price = rs.getDouble("price");
             int quantity = rs.getInt("quantity");
 
-            CartDetails cart = new CartDetails(price, rating, title, description, author, isbn, quantity);
-            return cart;
-        } else return null;
+            CartDetails cart = new CartDetails(bookID,price, rating, title, description, author, isbn, quantity);
+            cartDetails.add(cart);
+        }
+        return cartDetails;
     }
 
     public static boolean updateItemQuantity(int userID, int bookID, int quantity) throws SQLException {

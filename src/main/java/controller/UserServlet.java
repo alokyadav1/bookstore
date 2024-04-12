@@ -11,6 +11,7 @@ import models.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Enumeration;
 
 public class UserServlet extends HttpServlet {
     @Override
@@ -37,14 +38,16 @@ public class UserServlet extends HttpServlet {
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.getWriter().write("success");
 
-                RequestDispatcher dispatcher = req.getRequestDispatcher("dashboard.jsp");
-                dispatcher.forward(req, resp);
+//                RequestDispatcher dispatcher = req.getRequestDispatcher("dashboard.jsp");
+//                dispatcher.forward(req, resp);
+                resp.sendRedirect("dashboard.jsp");
             } else {
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 resp.getWriter().write("failed");
 
-                RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
-                dispatcher.forward(req, resp);
+//                RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
+//                dispatcher.forward(req, resp);
+                resp.sendRedirect("login.jsp");
             }
         } else if(action.equals("login")){
             String email = req.getParameter("email");
@@ -59,15 +62,17 @@ public class UserServlet extends HttpServlet {
                     resp.setStatus(HttpServletResponse.SC_OK);
                     resp.getWriter().write("success");
 
-                    RequestDispatcher dispatcher = req.getRequestDispatcher("dashboard.jsp");
-                    dispatcher.forward(req, resp);
+//                    RequestDispatcher dispatcher = req.getRequestDispatcher("dashboard.jsp");
+//                    dispatcher.forward(req, resp);
+                    resp.sendRedirect("dashboard.jsp");
                 } else {
                     System.out.println("login failed");
                     resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     resp.getWriter().write("failed");
 
-                    RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
-                    dispatcher.forward(req, resp);
+//                    RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
+//                    dispatcher.forward(req, resp);
+                    resp.sendRedirect("login.jsp");
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);

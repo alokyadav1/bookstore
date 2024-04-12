@@ -6,8 +6,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import models.Order;
+import models.OrderDetails;
 
 import java.io.IOException;
+import java.util.List;
 
 public class OrderServlet extends HttpServlet {
     @Override
@@ -44,6 +46,42 @@ public class OrderServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().write("failed");
         }
+
+
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<OrderDetails> orderHistory = null;
+        int userID = Integer.parseInt(req.getParameter("userID"));
+        try{
+            orderHistory = OrderDAO.getOrderHistory(userID);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        if(orderHistory == null){
+            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            resp.getWriter().write("No order history.");
+        } else {
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.getWriter().write("Found order history");
+
+            //printing order history in terminal
+            for (OrderDetails orderDetails : orderHistory){
+                System.out.println("Title: " + orderDetails.getBookTitle());
+                System.out.println("desc: " + orderDetails.getDesc());
+                System.out.println("author: " + orderDetails.getAuthor());
+                System.out.println("isbn: " + orderDetails.getISBN());
+                System.out.println("price: " + orderDetails.getPrice());
+                System.out.println("rating: " + orderDetails.getRating());
+                System.out.println("quantity: " + orderDetails.getQuantity());
+                System.out.println("total amount: " + orderDetails.getTotalAmount());
+                System.out.println("orderDate: " + orderDetails.getOrderDate());
+                System.out.println();
+            }
+        }
+
 
 
     }

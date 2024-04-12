@@ -34,10 +34,10 @@
 						<form method="post" action="login" class="register-form"
 							id="login-form">
 							<div class="form-group">
-								<label for="username"><i
+								<label for="email"><i
 									class="zmdi zmdi-account material-icons-name"></i></label> <input
-									type="email" name="email" id="username"
-									placeholder="Your Name" />
+									type="email" name="email" id="email"
+									placeholder="Your email" />
 							</div>
 							<div class="form-group">
 								<label for="password"><i class="zmdi zmdi-lock"></i></label> <input

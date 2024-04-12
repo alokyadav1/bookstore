@@ -86,3 +86,19 @@ h2 {
     padding: 20px 0;
     text-align: center;
 }
+
+.cart-container{
+    position: relative;
+    background-color: red;
+    cursor: pointer;
+    text-underline: none;
+}
+.cart-container span{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: blue;
+    color: white;
+    padding: 2px;
+    border-radius: 50%;
+}

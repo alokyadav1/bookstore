@@ -10,13 +10,14 @@ import models.Book;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class BookServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
         BookDAO.setConnection(getServletContext());
-        System.out.println("book servlet");
+        System.out.println("book servlet called");
     }
 
     @Override
@@ -53,27 +54,38 @@ public class BookServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        int bookID = Integer.parseInt(req.getParameter("id"));
-        try {
-            Book book = BookDAO.getBookDetails(bookID);
-            if(book != null){
-                resp.setStatus(HttpServletResponse.SC_OK);
-                resp.getWriter().write("book found successfully");
-                System.out.println("Book ID: " + book.getId());
-                System.out.println("title: " + book.getTitle());
-                System.out.println("description: " + book.getDescription());
-                System.out.println("author: " + book.getAuthor());
-                System.out.println("price: " + book.getPrice());
-                System.out.println("rating: " + book.getRating());
-                System.out.println("ISBN: " + book.getISBN());
-            } else {
-                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                resp.getWriter().write("book not found");
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        int bookID = 0;
+        if(req.getParameter("id") != null){
+            bookID = Integer.parseInt(req.getParameter("id"));
         }
+        // bookID > 0 => get details of a book using bookID
+        if(bookID > 0){
+            try {
+                Book book = BookDAO.getBookDetails(bookID);
+                if(book != null){
+                    resp.setStatus(HttpServletResponse.SC_OK);
+                    resp.getWriter().write("book found successfully");
+                } else {
+                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    resp.getWriter().write("book not found");
+                }
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else { // get details of all book
+            List<Book> books;
+            try{
+                books = BookDAO.getAllBooks();
+                HttpSession session = req.getSession();
+                session.setAttribute("books", books);
+                resp.setStatus(HttpServletResponse.SC_OK);
+            }catch(Exception e){
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                e.printStackTrace();
+            }
+        }
+
     }
 
     @Override

@@ -2,6 +2,7 @@ package dao;
 
 import jakarta.servlet.ServletContext;
 import models.Order;
+import models.OrderDetails;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -46,17 +47,28 @@ public class OrderDAO {
         return false;
     }
 
-//    public List<Order> getOrderHistory(int userID) throws SQLException {
-//
-//        //complete this.
-//        List<Order> orderhistory = new ArrayList<>();
-//        String q = "SELECT b.title, b.price, od.quantity, os.orderDate FROM order_summary os INNER JOIN order_details od ON os.orderID = od.orderID INNER JOIN book b ON b.bookID = od.bookID WHERE os.userID = ?";
-//
-//        PreparedStatement ps = connection.prepareStatement(q);
-//        ps.setInt(1, userID);
-//        ResultSet rs = ps.executeQuery();
-//        while(rs.next()){
-//            Order order = new Order()
-//        }
-//    }
+    public static  List<OrderDetails> getOrderHistory(int userID) throws SQLException {
+
+        //complete this.
+        List<OrderDetails> orderHistory = new ArrayList<>();
+        String q = "SELECT b.title,b.description,b.author,b.ISBN,b.rating, b.price, od.quantity, os.orderDate,os.totalAmount FROM order_summary os INNER JOIN order_details od ON os.orderID = od.orderID INNER JOIN book b ON b.bookID = od.bookID WHERE os.userID = ?";
+
+        PreparedStatement ps = connection.prepareStatement(q);
+        ps.setInt(1, userID);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            String bookTitle = rs.getString("title");
+            String desc = rs.getString("description");
+            String author = rs.getString("author");
+            String isbn = rs.getString("ISBN");
+            double rating = rs.getDouble("rating");
+            double price = rs.getDouble("price");
+            int quantity = rs.getInt("quantity");
+            String orderDate = rs.getString("orderDate");
+            double totalAmount = rs.getDouble("totalAmount");
+            OrderDetails orderDetails = new OrderDetails(bookTitle,desc,author,isbn,rating,price,orderDate,totalAmount,quantity);
+            orderHistory.add(orderDetails);
+        }
+        return orderHistory;
+    }
 }

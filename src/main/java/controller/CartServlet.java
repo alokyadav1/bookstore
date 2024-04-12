@@ -5,11 +5,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import models.Cart;
 import models.CartDetails;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class CartServlet extends HttpServlet {
     @Override
@@ -46,27 +48,34 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        int userID = 0;
+        if(req.getParameter("userID") == null){
+            userID = (int) req.getAttribute("userID");
+        } else {
+            userID = Integer.parseInt(req.getParameter("userID"));
+        }
 
-        int userID = Integer.parseInt(req.getParameter("userID"));
-        CartDetails cartItems = null;
+        List<CartDetails> cartDetails;
         try {
-            cartItems = CartDAO.getCartItems(userID);
+            cartDetails = CartDAO.getCartItems(userID);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        if(cartItems != null){
+        if(!cartDetails.isEmpty()){
             resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write("Record found");
 
-            System.out.println("Title: " + cartItems.getTitle());
-            System.out.println("Desc: " + cartItems.getDescription());
-            System.out.println("author: " + cartItems.getAuthor());
-            System.out.println("price: " + cartItems.getPrice());
-            System.out.println("quantity: " + cartItems.getQuantity());
+            HttpSession session = req.getSession();
+            session.setAttribute("carts", cartDetails);
+
+//            System.out.println("Title: " + cartItems.getTitle());
+//            System.out.println("Desc: " + cartItems.getDescription());
+//            System.out.println("author: " + cartItems.getAuthor());
+//            System.out.println("price: " + cartItems.getPrice());
+//            System.out.println("quantity: " + cartItems.getQuantity());
         } else{
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            resp.getWriter().write("Cart is empty");
+
         }
     }
 

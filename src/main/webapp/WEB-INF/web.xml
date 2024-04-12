@@ -38,11 +38,6 @@
     <servlet>
         <servlet-name>Book</servlet-name>
         <servlet-class>controller.BookServlet</servlet-class>
-        <multipart-config>
-            <max-file-size>2097152</max-file-size> <!-- maximum file size allowed (in bytes) -->
-            <max-request-size>4194304</max-request-size> <!-- maximum request size allowed (in bytes) -->
-            <file-size-threshold>0</file-size-threshold> <!-- size threshold after which files will be written to disk -->
-        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>Book</servlet-name>
@@ -96,6 +91,6 @@
     </context-param>
 
     <session-config>
-        <session-timeout>10</session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
 </web-app>
