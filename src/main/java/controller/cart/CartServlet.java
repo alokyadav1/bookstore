@@ -8,9 +8,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import models.Cart;
 import models.CartDetails;
+import models.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartServlet extends HttpServlet {
@@ -22,25 +24,47 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int userID = Integer.parseInt(req.getParameter("userID"));
         int bookID = Integer.parseInt(req.getParameter("bookID"));
+        double price = Double.parseDouble(req.getParameter("price"));
+        double rating = Double.parseDouble(req.getParameter("rating"));
+        String title = req.getParameter("title");
+        String description = req.getParameter("desc");
+        String author = req.getParameter("author");
+        String ISBN = req.getParameter("isbn");
+        System.out.println("bookID:" + bookID);
+        int quantity = 1;
 
-        Cart cart = new Cart(bookID, userID);
-        boolean success = false;
-        try {
-            success = CartDAO.addToCart(cart);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        CartDetails newCartItem = new CartDetails(bookID, price, rating, title, description, author, ISBN, quantity);
+        HttpSession session = req.getSession();
+        List<CartDetails> carts;
+
+        if(session.getAttribute("carts") == null){
+            carts = new ArrayList<>();
+        } else{
+            System.out.println("cart is not empty");
+            carts = (List<CartDetails>) session.getAttribute("carts");
         }
 
-        if (success){
-            System.out.println("Added to cart successfully");
+        User user = (User) session.getAttribute("user");
+        boolean success = false;
+        if (user != null){
+            System.out.println("userID: " + user.getUserID());
+            try {
+                Cart cart = new Cart(bookID, user.getUserID());
+                success = CartDAO.addToCart(cart);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if(success){
+            System.out.println("success");
+            carts.add(newCartItem);
+            session.setAttribute("carts", carts);
+            System.out.println("Successfully added to cart");
             resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write("success");
         } else {
-            System.out.println("Addition to cart failed.");
+            System.out.println("error");
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write("failed");
         }
 
     }
@@ -68,11 +92,6 @@ public class CartServlet extends HttpServlet {
             HttpSession session = req.getSession();
             session.setAttribute("carts", cartDetails);
 
-//            System.out.println("Title: " + cartItems.getTitle());
-//            System.out.println("Desc: " + cartItems.getDescription());
-//            System.out.println("author: " + cartItems.getAuthor());
-//            System.out.println("price: " + cartItems.getPrice());
-//            System.out.println("quantity: " + cartItems.getQuantity());
         } else{
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 

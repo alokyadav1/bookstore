@@ -19,7 +19,7 @@ function addBookToCart(bookID, title, price, desc, rating, author, isbn) {
     let serverResponse = null;
     $.ajax({
         type: "POST",
-        url: "addToCart", // URL of your servlet
+        url: "cart", // URL of your servlet
         data: {
             // Any data you want to send to the servlet
             bookID: bookID,
@@ -32,12 +32,12 @@ function addBookToCart(bookID, title, price, desc, rating, author, isbn) {
         },
         success: function (response) {
             // Handle the response from the servlet
-            console.log("Servlet response: " + JSON.stringify(response));
+            console.log("Servlet response success: " + JSON.stringify(response));
             serverResponse = response
 
         },
         error: function (response) {
-            console.log("Servlet response: " + JSON.stringify(response));
+            console.log("Servlet response error: " + JSON.stringify(response));
             serverResponse = response;
         }
     });

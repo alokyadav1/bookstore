@@ -15,17 +15,24 @@
     User user = (User) session.getAttribute("user");
     List<CartDetails> carts = (List<CartDetails>) session.getAttribute("carts");
 
+
+
+    String jsonData = null;
+
     // convert java list to js object.
-    JSONArray jsonArray = new JSONArray();
-    for (CartDetails cartDetails : carts) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("bookID", cartDetails.getId());
-        jsonObject.put("quantity", cartDetails.getQuantity());
-        jsonArray.put(jsonObject);
+    if (carts != null){
+        JSONArray jsonArray = new JSONArray();
+        for (CartDetails cartDetails : carts) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("bookID", cartDetails.getId());
+            jsonObject.put("quantity", cartDetails.getQuantity());
+            jsonArray.put(jsonObject);
+        }
+        jsonData = jsonArray.toString();
     }
 
-    // convert jsonArray to string
-    String jsonData = jsonArray.toString();
+
+
 %>
 <html>
 <head>
@@ -38,6 +45,11 @@
     <h1 class="text-2xl font-bold mb-4">Your Cart</h1>
 
     <!-- Cart Items -->
+    <% if (carts == null || carts.isEmpty()) {%>
+        <div>
+            <h1 class="text-center">Your cart is empty</h1>
+        </div>
+    <%} else {%>
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 " id="cart-container">
         <!-- Item 1 -->
         <% for (CartDetails cart : carts) { %>
@@ -121,10 +133,8 @@
                 onclick='addOrderDeleteCart(<%= user.getUserID()%>,<%= totalAmount%>,<%= jsonData%>)'>
             <a href="invoice.jsp">Buy Now</a>
         </button>
-
-
-
     </div>
+    <%}%>
 </div>
 
 <script src="js/cart.js"></script>

@@ -20,6 +20,7 @@ public class CartDAO {
     }
 
     public static boolean addToCart(Cart cart) throws SQLException {
+        System.out.println("Inside addToCart");
         int rowsAffected = 0;
         try{
             String q = "INSERT INTO cart(userID, bookID, quantity) values(?,?,?)";
@@ -28,6 +29,7 @@ public class CartDAO {
             ps.setInt(2, cart.getBookID());
             ps.setInt(3, cart.getQuantity());
             rowsAffected = ps.executeUpdate();
+            System.out.println("Rows affected: " + rowsAffected);
         } catch(Exception e){
             e.printStackTrace();
         }

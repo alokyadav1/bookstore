@@ -141,7 +141,7 @@
                             <% if(carts != null && !carts.isEmpty()){%>
                                 <span id="cart-size"><%= carts.size()%></span>
                             <%} else {%>
-                                <span id="cart-size"></span>
+                                <span id="cart-size">0</span>
                             <%}%>
                         </a>
                         <form action="logout" method="post">
