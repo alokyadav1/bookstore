@@ -68,7 +68,7 @@ public class BookDAO {
             String isbn = rs.getString("ISBN");
             double rating = rs.getDouble("rating");
             double price = rs.getDouble("price");
-            Book book = new Book(price, rating, title,desc, author,isbn);
+            Book book = new Book(bookID,price, rating, title,desc, author,isbn);
             books.add(book);
         }
         return books;

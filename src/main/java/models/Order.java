@@ -1,55 +1,41 @@
 package models;
 
+import org.json.JSONArray;
+
 public class Order {
+    int orderID;
+    int userID;
+    double totalAmount;
+    JSONArray cartItems;
 
-    private final int userID;
-    private String orderDate;
-    private final double totalAmount;
-
-    // order_details field
-
-    private int orderID = 0;
-    private final int bookID;
-
-    private final int quantity;
-
-    public Order(int userID, double totalAmount, int bookID, int quantity) {
+    // to send order data to DAO
+    public Order(int userID, double totalAmount, JSONArray cartItems) {
         this.userID = userID;
         this.totalAmount = totalAmount;
-        this.bookID = bookID;
-        this.quantity = quantity;
+        this.cartItems = cartItems;
     }
 
-    public Order(int userID, String orderDate, double totalAmount, int orderID, int bookID, int quantity) {
-        this.userID = userID;
-        this.orderDate = orderDate;
-        this.totalAmount = totalAmount;
+    // to fetch order data from db and send to client
+    public Order(int orderID, int userID, double totalAmount, JSONArray cartItems) {
         this.orderID = orderID;
-        this.bookID = bookID;
-        this.quantity = quantity;
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public String getOrderDate() {
-        return orderDate;
-    }
-
-    public double getTotalAmount() {
-        return totalAmount;
+        this.userID = userID;
+        this.totalAmount = totalAmount;
+        this.cartItems = cartItems;
     }
 
     public int getOrderID() {
         return orderID;
     }
 
-    public int getBookID() {
-        return bookID;
+    public int getUserID() {
+        return userID;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public JSONArray getCartItems() {
+        return cartItems;
     }
 }

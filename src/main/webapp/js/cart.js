@@ -1,3 +1,5 @@
+
+
 const incrementQuantity = (bookID,price) => {
     let id = "quantity-"+bookID;
     const quantity = document.getElementsByClassName(id);
@@ -29,6 +31,39 @@ const decrementQuantity = (bookID,price) => {
         totalAmount.innerText = parseInt(totalAmount.innerText) - price;
     }
 
+}
+
+
+const removeFromCart = (bookID, price) => {
+    $.ajax({
+        type: "POST",
+        url:"removeFromCart",
+        data:{
+            bookID:bookID
+        },
+        success: function(response){
+            console.log("Servlet response: " + JSON.stringify(response));
+        },
+        error: function(response){
+            console.log("Servlet response: " + JSON.stringify(response));
+        }
+    })
+
+    // update DOM
+
+    // remove book container from DOM
+    console.log("cart-item-"+bookID);
+    const bookToRemove = document.getElementsByClassName("cart-item-"+bookID);
+
+    // iterating in reverse order because after removing 1st element the position of second element becomes 1
+    // e.g [1,2,3] => after removing 1 index of 2 becomes 0
+    for (let i = bookToRemove.length - 1; i >= 0; i--) {
+        bookToRemove[i].remove();
+    }
+
+    // update total amount
+    const totalAmount = document.getElementById("totalAmount");
+    totalAmount.innerText = parseInt(totalAmount.innerText) - price;
 }
 
 

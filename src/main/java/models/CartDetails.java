@@ -21,6 +21,17 @@ public class CartDetails {
         this.quantity = quantity;
     }
 
+    public CartDetails(Book book, int quantity) {
+        this.id = book.getId();
+        this.price = book.getPrice();
+        this.rating = book.getRating();
+        this.title = book.getTitle();
+        this.description = book.getDescription();
+        this.author = book.getAuthor();
+        this.ISBN = book.getISBN();
+        this.quantity = quantity;
+    }
+
     public int getId() {
         return id;
     }

@@ -18,6 +18,7 @@ public class CartDAO {
     public static void setConnection(ServletContext context){
         con = DBConnection.connect(context);
     }
+
     public static boolean addToCart(Cart cart) throws SQLException {
         int rowsAffected = 0;
         try{
@@ -30,6 +31,14 @@ public class CartDAO {
         } catch(Exception e){
             e.printStackTrace();
         }
+        return rowsAffected > 0;
+    }
+
+    public static boolean removeFromCart(int bookID) throws SQLException {
+        String q = "DELETE FROM cart WHERE bookID = ?";
+        PreparedStatement ps = con.prepareStatement(q);
+        ps.setInt(1, bookID);
+        int rowsAffected = ps.executeUpdate();
         return rowsAffected > 0;
     }
 
@@ -71,6 +80,20 @@ public class CartDAO {
             rowsAffected = ps.executeUpdate();
         } catch(Exception e){
             e.printStackTrace();
+        }
+        return rowsAffected > 0;
+    }
+
+
+    public static boolean deleteCart(int userID) throws SQLException {
+        int rowsAffected = 0;
+        try {
+            String q = "DELETE FROM cart WHERE userID = ?";
+            PreparedStatement ps = con.prepareStatement(q);
+            ps.setInt(1, userID);
+            rowsAffected = ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return rowsAffected > 0;
     }

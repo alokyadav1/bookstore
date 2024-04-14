@@ -46,7 +46,7 @@
     
     <servlet>
         <servlet-name>Cart</servlet-name>
-        <servlet-class>controller.CartServlet</servlet-class>
+        <servlet-class>controller.cart.CartServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Cart</servlet-name>
@@ -62,7 +62,36 @@
         <servlet-name>Order</servlet-name>
         <url-pattern>/order</url-pattern>
     </servlet-mapping>
-    
+
+    <servlet>
+        <servlet-name>add to cart</servlet-name>
+        <servlet-class>controller.cart.AddToCartServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>add to cart</servlet-name>
+        <url-pattern>/addToCart</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>remove from cart</servlet-name>
+        <servlet-class>controller.cart.RemoveFromCartServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>remove from cart</servlet-name>
+        <url-pattern>/removeFromCart</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>delete user cart</servlet-name>
+        <servlet-class>controller.cart.DeleteUserCartServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>delete user cart</servlet-name>
+        <url-pattern>/deleteUserCart</url-pattern>
+    </servlet-mapping>
+
+
+
     
     
     <context-param>
@@ -91,6 +120,6 @@
     </context-param>
 
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>40</session-timeout>
     </session-config>
 </web-app>

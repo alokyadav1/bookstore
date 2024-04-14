@@ -2,6 +2,7 @@
 <%@ page import="models.Book" %>
 <%@ page import="java.util.List" %>
 <%@ page import="models.CartDetails" %>
+<%@ page import="java.util.ArrayList" %>
 <%--<%--%>
 <%--	if (session.getAttribute("email") == null){--%>
 <%--		response.sendRedirect("login.jsp");--%>
@@ -11,7 +12,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     User user = (User) session.getAttribute("user");
-    request.setAttribute("user", user);
 %>
 
 <%
@@ -27,11 +27,20 @@
 
 <%
     List<Book> books = (List<Book>) session.getAttribute("books");
-    request.setAttribute("books", books);
 
     List<CartDetails> carts = (List<CartDetails>) session.getAttribute("carts");
-    request.setAttribute("carts", carts);
 %>
+
+<%
+    List<Integer> bookIdList = new ArrayList<>();
+    if (carts != null){
+        for(CartDetails cart : carts){
+            bookIdList.add(cart.getId());
+        }
+    }
+
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,6 +53,7 @@
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
     <!-- Font Awesome icons (free version)-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
             crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/794b194f27.js" crossorigin="anonymous"></script>
@@ -81,10 +91,10 @@
 </head>
 <body>
 
-<section data-bs-version="5.1" class="menu menu2 cid-u8X6PgEneK" once="menu" id="menu-5-u8X6PgEneK">
+<section data-bs-version="5.1" class="menu menu2 cid-u8X6PgEneK relative" once="menu" id="menu-5-u8X6PgEneK">
+    <div class="absolute inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-md"></div>
 
-
-    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg relative z-10 bg-blue-600">
         <div class="container">
             <div class="navbar-brand">
 				<span class="navbar-logo">
@@ -129,7 +139,9 @@
                         <a href="cart.jsp" class="cart-container mr-10">
                             <i class="fa-solid fa-cart-shopping text-2xl "></i>
                             <% if(carts != null && !carts.isEmpty()){%>
-                                <span><%= carts.size()%></span>
+                                <span id="cart-size"><%= carts.size()%></span>
+                            <%} else {%>
+                                <span id="cart-size"></span>
                             <%}%>
                         </a>
                         <form action="logout" method="post">
@@ -138,8 +150,8 @@
                             </div>
                         </form>
 
-                        <div class="navbar-buttons mbr-section-btn">
-                            <a class="btn btn-primary display-4" href="#">${user.username}</a>
+                        <div class="navbar-buttons mbr-section-btn capitalize">
+                            <a class="btn btn-primary display-10" href="#">${user.username}</a>
                         </div>
                     </c:otherwise>
                 </c:choose>
@@ -149,13 +161,9 @@
     </nav>
 </section>
 
-<section data-bs-version="5.1" class="header18 cid-u8X6PgHKmk mbr-fullscreen"
-         data-bg-video="https://www.youtube.com/embed/vhG5usAFL_g?autoplay=1&amp;loop=1&amp;playlist=vhG5usAFL_g&amp;t=20&amp;mute=1&amp;playsinline=1&amp;controls=0&amp;showinfo=0&amp;autohide=1&amp;allowfullscreen=true&amp;mode=transparent"
-         id="hero-16-u8X6PgHKmk">
-
-
+<section class="main h-screen flex items-center bg-orange-700 ">
     <div class="mbr-overlay" style="opacity: 0.5; background-color: rgb(0, 0, 0);"></div>
-    <div class="container-fluid">
+    <div class="container-fluid text-center">
         <div class="row">
             <div class="content-wrap col-12 col-md-12">
                 <h1 class="mbr-section-title mbr-fonts-style mbr-white mb-4 display-1">
@@ -188,7 +196,11 @@
             </div>
         </div>
         <div class="row">
-            <% if (books != null) {%>
+            <% if (books == null) {%>
+            <div>
+                <p>Login to see available books.</p>
+            </div>
+            <%} else {%>
             <% for (Book book : books) { %>
             <div class="item features-image col-12 col-md-6 col-lg-3">
                 <div class="item-wrapper">
@@ -196,14 +208,33 @@
                         <img src="assets/images/photo-1531988042231-d39a9cc12a9a.jpeg" alt="Mobirise Website Builder">
                     </div>
                     <div class="p-3 item-content">
-                        <h5 class="item-title mbr-fonts-style display-5">
+                        <h5 class="item-title mbr-fonts-style display-5 capitalize">
                             <strong><%= book.getTitle()%>
                             </strong>
                         </h5>
                         <h6 class="item-subtitle mbr-fonts-style display-7">Rs.<%= book.getPrice()%>
                         </h6>
                         <div class="flex flex-wrap justify-between items-center item-footer">
-                            <button class="bg-blue-700 p-3 rounded-full text-lg text-white">Add to cart</button>
+                            <% if (bookIdList.contains(book.getId())) {%>
+                                <a href="cart.jsp" class="bg-orange-700 p-3 rounded-full text-lg text-white">
+                                    Go To Cart
+                                </a>
+                            <%} else {%>
+                                <%if(user != null){%>
+                                    <button class="bg-blue-700 p-3 rounded-full text-lg text-white"
+                                            onclick="updateCart('<%= book.getId()%>', '<%= book.getTitle()%>', '<%= book.getPrice()%>', '<%= book.getDescription()%>', '<%= book.getRating()%>', '<%= book.getAuthor()%>', '<%= book.getISBN()%>')"
+                                            id="add-to-cart-<%= book.getId()%>"
+                                    >
+                                        Add To Cart
+                                    </button>
+                                <%} else {%>
+                                    <a href="login.jsp" class="bg-blue-700 p-3 rounded-full text-lg text-white">Add To Cart</a>
+                                <%}%>
+                                <a href="cart.jsp" class="bg-orange-700 p-3 rounded-full text-lg text-white" id="go-to-cart-<%= book.getId()%>" hidden="hidden">
+                                    Go To Cart
+                                </a>
+                            <%}%>
+
                             <button class="bg-blue-700 p-3 rounded-full text-lg text-white">Buy Now</button>
                         </div>
                     </div>
@@ -211,10 +242,6 @@
                 </div>
             </div>
             <%}%>
-            <%} else {%>
-            <div>
-                <p>Login to see available books.</p>
-            </div>
             <%}%>
         </div>
     </div>
@@ -304,6 +331,6 @@
 <script src="assets/embla/script.js"></script>
 <script src="assets/theme/js/script.js"></script>
 
-
+<script src="js/dashboard.js"></script>
 </body>
 </html>
