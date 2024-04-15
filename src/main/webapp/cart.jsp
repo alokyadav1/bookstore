@@ -26,6 +26,8 @@
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("bookID", cartDetails.getId());
             jsonObject.put("quantity", cartDetails.getQuantity());
+            jsonObject.put("title", cartDetails.getTitle());
+            jsonObject.put("price", cartDetails.getPrice());
             jsonArray.put(jsonObject);
         }
         jsonData = jsonArray.toString();
@@ -131,7 +133,7 @@
     <div class="flex justify-center mt-8">
         <button class="bg-blue-700 text-white font-bold py-4 px-6 rounded-2xl hover:bg-blue-600"
                 onclick='addOrderDeleteCart(<%= user.getUserID()%>,<%= totalAmount%>,<%= jsonData%>)'>
-            <a href="invoice.jsp">Buy Now</a>
+            Buy Now
         </button>
     </div>
     <%}%>

@@ -17,6 +17,8 @@ import java.util.List;
 
 public class RemoveFromCartServlet extends HttpServlet {
     @Override
+
+    // removes item from cart
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int bookID = Integer.parseInt(req.getParameter("bookID"));
         boolean success = false;

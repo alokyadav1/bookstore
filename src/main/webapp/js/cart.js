@@ -68,3 +68,25 @@ const removeFromCart = (bookID, price) => {
 
 
 
+// currently no usage
+function redirectToInvoice(cart){
+    // Create a new XMLHttpRequest object
+    const xhr = new XMLHttpRequest();
+
+    // Set up the request
+    xhr.open("POST", "invoice.jsp", true);
+
+    // Set the content type header
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    // Define the callback function to handle the response
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            // Once the data has been sent, navigate to the "invoice.jsp" page
+            window.location.href = "invoice.jsp";
+        }
+    };
+
+    // Send the JSON data
+    xhr.send(JSON.stringify(cart));
+}

@@ -28,6 +28,25 @@
     <title>Bookify Invoice</title>
     <!-- Include Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function removeCartSession(){
+            $.ajax({
+                type:"GET",
+                url:"deleteUserCart",
+                async:false,
+                success:function(response){
+                    console.log("res: ", response)
+                },
+                error:function(error){
+                    console.log("error: ", error)
+                }
+            })
+        }
+
+
+    </script>
+
 </head>
 
 <body class="bg-gray-100">
@@ -71,12 +90,12 @@
             <tbody>
             <!-- Example items, replace with your actual invoice items -->
             <%for(CartDetails cart : carts){%>
-                <tr>
-                    <td class="border px-4 py-2 capitalize"><%= cart.getTitle()%></td>
-                    <td class="border px-4 py-2"><%= cart.getQuantity()%></td>
-                    <td class="border px-4 py-2">&#8377;<%= cart.getPrice()%> </td>
-                </tr>
-                <% totalAmount += (cart.getQuantity() * cart.getPrice());%>
+            <tr>
+                <td class="border px-4 py-2 capitalize"><%= cart.getTitle()%></td>
+                <td class="border px-4 py-2"><%= cart.getQuantity()%></td>
+                <td class="border px-4 py-2">&#8377;<%= cart.getPrice()%> </td>
+            </tr>
+            <% totalAmount += (cart.getQuantity() * cart.getPrice());%>
             <%}%>
             </tbody>
         </table>
@@ -90,7 +109,7 @@
     <!-- Success message and link to dashboard -->
     <div class="mt-8 text-center">
         <p class="text-green-600 text-3xl">&#127881; Your purchase was successful!</p>
-        <a href="dashboard.jsp" class="text-blue-600 underline">Go to Dashboard</a>
+        <button onclick="removeCartSession()"><a href="dashboard.jsp" class="text-blue-600 underline">Go to Dashboard</a></button>
     </div>
 </div>
 </body>

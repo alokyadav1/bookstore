@@ -1,13 +1,11 @@
 package controller;
 
-import com.mysql.cj.xdevapi.JsonArray;
-import com.mysql.cj.xdevapi.JsonParser;
-import com.mysql.cj.xdevapi.JsonValue;
 import dao.OrderDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import models.Order;
 import models.OrderDetails;
 import org.json.JSONArray;
@@ -69,8 +67,15 @@ public class OrderServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        int userID = 0;
+        if(req.getParameter("userID") == null){
+            userID = (int) req.getAttribute("userID");
+        } else {
+            userID = Integer.parseInt(req.getParameter("userID"));
+        }
+
         List<OrderDetails> orderHistory = null;
-        int userID = Integer.parseInt(req.getParameter("userID"));
         try{
             orderHistory = OrderDAO.getOrderHistory(userID);
         }catch(Exception e){
@@ -79,24 +84,14 @@ public class OrderServlet extends HttpServlet {
 
         if(orderHistory == null){
             resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            resp.getWriter().write("No order history.");
         } else {
+            System.out.println("orderHistory: " + orderHistory);
             resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write("Found order history");
 
-            //printing order history in terminal
-            for (OrderDetails orderDetails : orderHistory){
-                System.out.println("Title: " + orderDetails.getBookTitle());
-                System.out.println("desc: " + orderDetails.getDesc());
-                System.out.println("author: " + orderDetails.getAuthor());
-                System.out.println("isbn: " + orderDetails.getISBN());
-                System.out.println("price: " + orderDetails.getPrice());
-                System.out.println("rating: " + orderDetails.getRating());
-                System.out.println("quantity: " + orderDetails.getQuantity());
-                System.out.println("total amount: " + orderDetails.getTotalAmount());
-                System.out.println("orderDate: " + orderDetails.getOrderDate());
-                System.out.println();
-            }
+            HttpSession session = req.getSession();
+            session.setAttribute("orderHistory", orderHistory);
+
+
         }
 
 

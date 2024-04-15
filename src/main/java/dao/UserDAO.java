@@ -12,17 +12,22 @@ public class UserDAO {
         connection = DBConnection.connect(context);
     }
 
-    public static boolean registerUser(User user){
+    public static User registerUser(User user){
         try {
-            PreparedStatement statement = connection.prepareStatement(SQLQuery.REGISTER_USER);
+            PreparedStatement statement = connection.prepareStatement(SQLQuery.REGISTER_USER,PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPassword());
             int rowsInserted = statement.executeUpdate();
-            return rowsInserted > 0;
+            ResultSet keys = statement.getGeneratedKeys();
+            int userID = 0;
+            if (keys.next()){
+                userID = keys.getInt(1);
+            }
+            return new User(userID,user.getUsername(),user.getEmail());
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 

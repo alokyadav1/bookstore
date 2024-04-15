@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class DeleteUserCartServlet extends HttpServlet {
+
     @Override
+    // deletes cart of user
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("userID : " + req.getParameter("userID"));
         int userID;
@@ -27,11 +29,24 @@ public class DeleteUserCartServlet extends HttpServlet {
                 System.out.println("Delete successfully");
                 resp.setStatus(HttpServletResponse.SC_OK);
             } else {
+
                 System.out.println("Delete failed.");
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
         } else {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
+    }
+
+    // remove user's cart from session
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("removing cart session...");
+        HttpSession session = req.getSession();
+        if (session.getAttribute("carts") != null){
+            session.removeAttribute("carts");
+        }
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 }

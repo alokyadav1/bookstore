@@ -7,7 +7,7 @@ function addOrderDeleteCart(userID, totalAmount, cartItems){
     }
 
     console.log("data: ", data)
-
+    //localStorage.setItem("cart", JSON.stringify(cartItems))
     //order detail to database
     $.ajax({
         type: "POST",
@@ -34,4 +34,7 @@ function addOrderDeleteCart(userID, totalAmount, cartItems){
             console.log("Servlet response: " + JSON.stringify(response));
         }
     })
+
+    window.location.href = "invoice.jsp"
+
 }

@@ -1,0 +1,34 @@
+/* Customize scrollbar for WebKit browsers */
+/* The ::-webkit-scrollbar pseudo-element is supported by WebKit-based browsers */
+::-webkit-scrollbar {
+    width: 5px; /* Set the width of the scrollbar */
+    border-radius: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #e8d3d3;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #d0b1b1;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #d5b9b9;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 5px;
+    background-color: #d2b1b1;
+    z-index: 999;
+    border-radius: 10px;
+}

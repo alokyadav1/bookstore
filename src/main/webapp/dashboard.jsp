@@ -39,6 +39,8 @@
         }
     }
 
+
+
 %>
 
 <!DOCTYPE html>
@@ -151,7 +153,7 @@
                         </form>
 
                         <div class="navbar-buttons mbr-section-btn capitalize">
-                            <a class="btn btn-primary display-10" href="#">${user.username}</a>
+                            <a class="btn btn-primary display-10" href="orderHistory.jsp">${user.username}</a>
                         </div>
                     </c:otherwise>
                 </c:choose>
@@ -204,16 +206,19 @@
             <% for (Book book : books) { %>
             <div class="item features-image col-12 col-md-6 col-lg-3">
                 <div class="item-wrapper">
-                    <div class="item-img">
-                        <img src="assets/images/photo-1531988042231-d39a9cc12a9a.jpeg" alt="Mobirise Website Builder">
+                    <div class="p-2 cursor-pointer" onclick="redirectToBookDetails(<%= book.getId()%>)">
+                        <div class="item-img">
+                            <img src="assets/images/photo-1531988042231-d39a9cc12a9a.jpeg" alt="Mobirise Website Builder">
+                        </div>
+                        <div>
+                            <h5 class="item-title mbr-fonts-style display-5 capitalize">
+                                <strong><%= book.getTitle()%>
+                                </strong>
+                            </h5>
+                            <h6 class="item-subtitle mbr-fonts-style display-7">Rs.<%= book.getPrice()%></h6>>
+                        </div>
                     </div>
                     <div class="p-3 item-content">
-                        <h5 class="item-title mbr-fonts-style display-5 capitalize">
-                            <strong><%= book.getTitle()%>
-                            </strong>
-                        </h5>
-                        <h6 class="item-subtitle mbr-fonts-style display-7">Rs.<%= book.getPrice()%>
-                        </h6>
                         <div class="flex flex-wrap justify-between items-center item-footer">
                             <% if (bookIdList.contains(book.getId())) {%>
                                 <a href="cart.jsp" class="bg-orange-700 p-3 rounded-full text-lg text-white">
@@ -258,27 +263,27 @@
             <div class="col-12">
                 <div class="social-row">
                     <div class="soc-item">
-                        <a href="https://mobiri.se/" target="_blank">
+                        <a href="#">
                             <span class="mbr-iconfont socicon socicon-facebook"></span>
                         </a>
                     </div>
                     <div class="soc-item">
-                        <a href="https://mobiri.se/" target="_blank">
+                        <a href="#">
                             <span class="mbr-iconfont socicon-twitter socicon"></span>
                         </a>
                     </div>
                     <div class="soc-item">
-                        <a href="https://mobiri.se/" target="_blank">
+                        <a href="#">
                             <span class="mbr-iconfont socicon-instagram socicon"></span>
                         </a>
                     </div>
                     <div class="soc-item">
-                        <a href="https://mobiri.se/" target="_blank">
+                        <a href="#">
                             <span class="mbr-iconfont socicon socicon-linkedin"></span>
                         </a>
                     </div>
                     <div class="soc-item">
-                        <a href="https://mobiri.se/" target="_blank">
+                        <a href="#">
                             <span class="mbr-iconfont socicon socicon-twitch"></span>
                         </a>
                     </div>

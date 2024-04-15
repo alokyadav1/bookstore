@@ -2,49 +2,34 @@ package models;
 
 public class OrderDetails {
 
-   //Book details
-    String bookTitle, desc, author, ISBN;
-    double rating, price;
-
     //order details
+    int orderID;
+    int bookID;
     String orderDate;
     double totalAmount;
     int quantity;
 
-    public OrderDetails(String bookTitle, String desc, String author, String ISBN, double rating, double price, String orderDate, double totalAmount, int quantity) {
-        this.bookTitle = bookTitle;
-        this.desc = desc;
-        this.author = author;
-        this.ISBN = ISBN;
-        this.rating = rating;
-        this.price = price;
+    public OrderDetails(int orderID, int bookID, String orderDate, double totalAmount, int quantity) {
+        this.orderID = orderID;
+        this.bookID = bookID;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
         this.quantity = quantity;
     }
 
-    public String getBookTitle() {
-        return bookTitle;
+    public OrderDetails(int bookID, String orderDate, double totalAmount, int quantity) {
+        this.bookID = bookID;
+        this.orderDate = orderDate;
+        this.totalAmount = totalAmount;
+        this.quantity = quantity;
     }
 
-    public String getDesc() {
-        return desc;
+    public int getOrderID() {
+        return orderID;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public String getISBN() {
-        return ISBN;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public double getPrice() {
-        return price;
+    public int getBookID() {
+        return bookID;
     }
 
     public String getOrderDate() {
