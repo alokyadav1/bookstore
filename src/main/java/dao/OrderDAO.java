@@ -5,6 +5,7 @@ import models.Order;
 import models.OrderDetails;
 import org.json.JSONException;
 import org.json.JSONObject;
+import sql.constants.SQLQuery;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,10 +24,9 @@ public class OrderDAO {
     public static boolean addOrder(Order order) throws SQLException {
         connection.setAutoCommit(false);
         try {
-            String insertOrderSummaryQuery = "INSERT INTO order_summary (userID, totalAmount) VALUES (?, ?)";
-            String insertOrderDetailsQuery = "INSERT INTO order_details (orderID, bookID, quantity) VALUES (?, ?, ?)";
-            PreparedStatement summaryStatement = connection.prepareStatement(insertOrderSummaryQuery, PreparedStatement.RETURN_GENERATED_KEYS);
-            PreparedStatement detailStatement = connection.prepareStatement(insertOrderDetailsQuery);
+
+            PreparedStatement summaryStatement = connection.prepareStatement(SQLQuery.INSERT_ORDER_SUMMARY, PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement detailStatement = connection.prepareStatement(SQLQuery.INSERT_ORDER_DETAIL);
 
             summaryStatement.setInt(1, order.getUserID());
             summaryStatement.setDouble(2, order.getTotalAmount());
@@ -69,9 +69,8 @@ public class OrderDAO {
 
         //complete this.
         List<OrderDetails> orderHistory = new ArrayList<>();
-        String q = "SELECT os.orderID, od.bookID, os.orderDate,od.quantity,os.totalAmount FROM order_summary os INNER JOIN order_details od on os.orderID = od.orderID WHERE os.userID = ?";
 
-        PreparedStatement ps = connection.prepareStatement(q);
+        PreparedStatement ps = connection.prepareStatement(SQLQuery.GET_ORDER_HISTORY);
         ps.setInt(1, userID);
         ResultSet rs = ps.executeQuery();
         while(rs.next()){

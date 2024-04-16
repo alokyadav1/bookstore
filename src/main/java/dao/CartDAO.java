@@ -4,6 +4,7 @@ import jakarta.servlet.ServletContext;
 import models.Cart;
 import models.CartDetails;
 import models.OrderDetails;
+import sql.constants.SQLQuery;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,8 +24,7 @@ public class CartDAO {
         System.out.println("Inside addToCart");
         int rowsAffected = 0;
         try{
-            String q = "INSERT INTO cart(userID, bookID, quantity) values(?,?,?)";
-            PreparedStatement ps = con.prepareStatement(q);
+            PreparedStatement ps = con.prepareStatement(SQLQuery.ADD_TO_CART);
             ps.setInt(1, cart.getUserID());
             ps.setInt(2, cart.getBookID());
             ps.setInt(3, cart.getQuantity());
@@ -37,8 +37,7 @@ public class CartDAO {
     }
 
     public static boolean removeFromCart(int bookID) throws SQLException {
-        String q = "DELETE FROM cart WHERE bookID = ?";
-        PreparedStatement ps = con.prepareStatement(q);
+        PreparedStatement ps = con.prepareStatement(SQLQuery.REMOVE_FROM_CART);
         ps.setInt(1, bookID);
         int rowsAffected = ps.executeUpdate();
         return rowsAffected > 0;
@@ -46,11 +45,7 @@ public class CartDAO {
 
     public static List<CartDetails> getCartItems(int userID) throws SQLException {
         List<CartDetails> cartDetails = new ArrayList<>();
-        String q = "SELECT book.bookID, title, description, author, price, ISBN, rating, quantity " +
-                    "FROM book INNER JOIN cart " +
-                    "ON book.bookID = cart.bookID "+
-                    "WHERE cart.userID = ?";
-        PreparedStatement ps = con.prepareStatement(q);
+        PreparedStatement ps = con.prepareStatement(SQLQuery.GET_CART_ITEM);
         // complete this.
         ps.setInt(1, userID);
         ResultSet rs =  ps.executeQuery();
@@ -72,10 +67,9 @@ public class CartDAO {
 
     public static boolean updateItemQuantity(int userID, int bookID, int quantity) throws SQLException {
         if(quantity <= 0) return false;
-        String q = "UPDATE cart SET quantity = ? where userID = ? AND bookID = ?";
         int rowsAffected = 0;
         try{
-            PreparedStatement ps = con.prepareStatement(q);
+            PreparedStatement ps = con.prepareStatement(SQLQuery.UPDATE_CART_ITEM);
             ps.setInt(1, quantity);
             ps.setInt(2, userID);
             ps.setInt(3, bookID);
@@ -90,8 +84,7 @@ public class CartDAO {
     public static boolean deleteCart(int userID) throws SQLException {
         int rowsAffected = 0;
         try {
-            String q = "DELETE FROM cart WHERE userID = ?";
-            PreparedStatement ps = con.prepareStatement(q);
+            PreparedStatement ps = con.prepareStatement(SQLQuery.DELETE_CART);
             ps.setInt(1, userID);
             rowsAffected = ps.executeUpdate();
         } catch (SQLException e) {

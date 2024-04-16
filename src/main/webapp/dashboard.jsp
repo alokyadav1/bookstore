@@ -15,10 +15,12 @@
 %>
 
 <%
-    RequestDispatcher rd = request.getRequestDispatcher("/book");
-    rd.include(request, response);
+    if(session.getAttribute("books") == null){
+        RequestDispatcher rd = request.getRequestDispatcher("/book");
+        rd.include(request, response);
+    }
 
-    if(user != null){
+    if(user != null && session.getAttribute("carts") == null){
         request.setAttribute("userID", user.getUserID());
         RequestDispatcher cartDispatcher = request.getRequestDispatcher("/cart");
         cartDispatcher.include(request,response);
@@ -94,9 +96,9 @@
 <body>
 
 <section data-bs-version="5.1" class="menu menu2 cid-u8X6PgEneK relative" once="menu" id="menu-5-u8X6PgEneK">
-    <div class="absolute inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-md"></div>
+    <div class=""></div>
 
-    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg relative z-10 bg-blue-600">
+    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg relative z-10 ">
         <div class="container">
             <div class="navbar-brand">
 				<span class="navbar-logo">
@@ -163,11 +165,11 @@
     </nav>
 </section>
 
-<section class="main h-screen flex items-center bg-orange-700 ">
+<section class="main h-screen flex items-center  " style="background-image: url('images/hero.jpg')">
     <div class="mbr-overlay" style="opacity: 0.5; background-color: rgb(0, 0, 0);"></div>
     <div class="container-fluid text-center">
         <div class="row">
-            <div class="content-wrap col-12 col-md-12">
+            <div class="content-wrap col-12 col-md-12 text-shadow">
                 <h1 class="mbr-section-title mbr-fonts-style mbr-white mb-4 display-1">
                     <strong>Discover Books</strong>
                 </h1>
@@ -215,7 +217,7 @@
                                 <strong><%= book.getTitle()%>
                                 </strong>
                             </h5>
-                            <h6 class="item-subtitle mbr-fonts-style display-7">Rs.<%= book.getPrice()%></h6>>
+                            <h6 class="item-subtitle mbr-fonts-style display-7">Rs.<%= book.getPrice()%></h6>
                         </div>
                     </div>
                     <div class="p-3 item-content">
@@ -233,7 +235,7 @@
                                         Add To Cart
                                     </button>
                                 <%} else {%>
-                                    <a href="login.jsp" class="bg-blue-700 p-3 rounded-full text-lg text-white">Add To Cart</a>
+                                    <a href="login.jsp" class="bg-blue-700 p-3 rounded-full text-lg text-white" style="text-underline: none">Add To Cart</a>
                                 <%}%>
                                 <a href="cart.jsp" class="bg-orange-700 p-3 rounded-full text-lg text-white" id="go-to-cart-<%= book.getId()%>" hidden="hidden">
                                     Go To Cart

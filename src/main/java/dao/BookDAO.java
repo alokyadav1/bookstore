@@ -2,6 +2,7 @@ package dao;
 
 import jakarta.servlet.ServletContext;
 import models.Book;
+import sql.constants.SQLQuery;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,8 +17,7 @@ public class BookDAO {
     public static boolean insertBook(Book book) throws SQLException{
         int record = 0;
         try{
-            String q = "insert into book(title, description, price, author, ISBN, rating) values(?,?,?,?,?,?)";
-            PreparedStatement ps = con.prepareStatement(q);
+            PreparedStatement ps = con.prepareStatement(SQLQuery.INSERT_BOOK);
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getDescription());
             ps.setDouble(3, book.getPrice());
@@ -33,8 +33,7 @@ public class BookDAO {
 
     public static Book getBookDetails(int id) throws SQLException {
         try{
-            String q = "SELECT bookID, title, description, author, ISBN, rating, price from book where bookID = ?";
-            PreparedStatement ps = con.prepareStatement(q);
+            PreparedStatement ps = con.prepareStatement(SQLQuery.GET_BOOK_DETAILS);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
@@ -57,9 +56,8 @@ public class BookDAO {
 
     public static List<Book> getAllBooks() throws SQLException {
         List<Book> books = new ArrayList<>();
-        String q = "SELECT bookID, title, description, author, ISBN, rating, price FROM book";
         Statement statement = con.createStatement();
-        ResultSet rs = statement.executeQuery(q);
+        ResultSet rs = statement.executeQuery(SQLQuery.GET_ALL_BOOK);
         while(rs.next()){
             int bookID = rs.getInt("bookID");
             String title = rs.getString("title");
@@ -77,8 +75,7 @@ public class BookDAO {
     public static boolean deleteBook(int bookID) throws SQLException{
         int rowsAffected = 0;
         try{
-            String q = "DELETE FROM book WHERE bookID = ?";
-            PreparedStatement ps = con.prepareStatement(q);
+            PreparedStatement ps = con.prepareStatement(SQLQuery.DELETE_BOOK);
             ps.setInt(1, bookID);
             rowsAffected = ps.executeUpdate();
         } catch(Exception e){
