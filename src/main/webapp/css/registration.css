@@ -1,0 +1,13 @@
+#signup{
+    border: none;
+    background-color: #6d6dde;
+    color: white;
+    padding: 15px;
+    font-size: large;
+    border-radius: 999px;
+}
+
+#signup:disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+}

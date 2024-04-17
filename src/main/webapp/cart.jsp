@@ -44,12 +44,14 @@
 </head>
 <body>
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold mb-4">Your Cart</h1>
+    <h1 class="font-bold mb-4 text-center font-bold text-4xl opacity-60">
+        <span class="bg-blue-300 rounded-xl p-4 ">Your Cart</span>
+    </h1>
 
     <!-- Cart Items -->
     <% if (carts == null || carts.isEmpty()) {%>
-        <div>
-            <h1 class="text-center">Your cart is empty</h1>
+        <div class="flex items-center justify-center h-full bg-blue-100 rounded-xl shadow-lg">
+            <h2 class="font-bold text-6xl opacity-20 text-center">Your Cart is Empty.</h2>
         </div>
     <%} else {%>
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 " id="cart-container">

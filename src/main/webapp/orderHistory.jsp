@@ -72,61 +72,69 @@
 </head>
 <body>
 <!-- Order History Header -->
-<h1 class="text-2xl font-bold mb-4 text-center">Order History</h1>
-<div class="grid grid-cols-12 gap-4">
-    <div class="col-span-4 bg-gray-200 p-4 rounded-xl shadow-xl h-screen max-h-screen overflow-auto">
-        <div class="">
-            <%for (Map.Entry<Integer, ArrayList<OrderDetails>> entry : orderdetails.entrySet()) {%>
-                <div class="w-full mx-auto px-4 py-2">
-                    <a href="orderHistory.jsp?orderID=<%= entry.getKey()%>"
-                       class="block bg-white rounded-lg shadow-lg p-6 mb-6 hover:shadow-xl transition duration-300">
-                        <p class="font-semibold">Order ID: #<%= entry.getKey()%>
-                        </p>
-                        <p class="text-gray-600">Order Date: <%= entry.getValue().get(0).getOrderDate()%>
-                        </p>
-                        <p class="text-gray-600">Total Amount: &#8377;<%= entry.getValue().get(0).getTotalAmount()%>
-                        </p>
-                        <p class="text-gray-600">Books: <%= entry.getValue().size()%>
-                        </p>
-                    </a>
-                </div>
-            <%}%>
-        </div>
+<h1 class="font-bold mb-4 text-center font-bold text-4xl opacity-60 mb-5 mt-2">
+    <span class="bg-blue-300 rounded-xl p-4 mb-5 mt-2">Order History</span>
+</h1>
+<%if(orderdetails.isEmpty()){%>
+    <div class="flex items-center justify-center h-full bg-blue-100 rounded-xl shadow-lg m-5">
+        <h2 class="font-bold text-6xl opacity-20 text-center">You have not Ordered anything.</h2>
     </div>
-
-    <div class="col-span-8 bg-gray-300 p-4 h-screen rounded-xl shadow-xl max-h-screen overflow-auto">
-        <%if (bookOrder == null) {%>
-            <div class="flex items-center justify-center h-full">
-                <h2 class="font-bold text-6xl opacity-20 text-center">Select order card to view more details about it</h2>
-            </div>
-
-        <%} else {%>
-            <div class="container mx-auto px-4 py-8 flex flex wrap items-center justify-between gap-4">
-                <%
-                    for (OrderDetails od : bookOrder) {
-                        Book book = bookMap.get(od.getBookID());
-                %>
-                <a href="bookDetails.jsp?bookID=<%= od.getBookID()%>">
-                    <div class="bg-white shadow-lg rounded-lg w-fit p-2">
-                        <img src="assets/images/photo-1531988042231-d39a9cc12a9a.jpeg" alt="Book Cover"
-                             class="w-full h-64 object-cover rounded-lg">
-                        <div class="p-4">
-                            <h2 class="text-xl font-bold mb-2"><%= book.getTitle()%>
-                            </h2>
-                            <p class="text-gray-600 mb-2">Price:&#8377; <%= book.getPrice()%>
+<%}else{%>
+    <div class="grid grid-cols-12 gap-4">
+        <div class="col-span-4 bg-gray-200 p-4 rounded-xl shadow-xl h-screen max-h-screen overflow-auto">
+            <div class="">
+                <%for (Map.Entry<Integer, ArrayList<OrderDetails>> entry : orderdetails.entrySet()) {%>
+                    <div class="w-full mx-auto px-4 py-2">
+                        <a href="orderHistory.jsp?orderID=<%= entry.getKey()%>"
+                           class="block bg-white rounded-lg shadow-lg p-6 mb-6 hover:shadow-xl transition duration-300">
+                            <p class="font-semibold">Order ID: #<%= entry.getKey()%>
                             </p>
-                            <p class="text-gray-600 mb-2">Quantity: <%= od.getQuantity()%>
+                            <p class="text-gray-600">Order Date: <%= entry.getValue().get(0).getOrderDate()%>
                             </p>
-                        </div>
+                            <p class="text-gray-600">Total Amount: &#8377;<%= entry.getValue().get(0).getTotalAmount()%>
+                            </p>
+                            <p class="text-gray-600">Books: <%= entry.getValue().size()%>
+                            </p>
+                        </a>
                     </div>
-                </a>
-
                 <%}%>
             </div>
-        <%}%>
+        </div>
 
+        <div class="col-span-8 bg-gray-300 p-4 h-screen rounded-xl shadow-xl max-h-screen overflow-auto">
+            <%if (bookOrder == null) {%>
+                <div class="flex items-center justify-center h-full">
+                    <h2 class="font-bold text-6xl opacity-20 text-center">Select order card to view more details about it</h2>
+                </div>
+
+            <%} else {%>
+                <div class="container mx-auto px-4 py-8 flex flex wrap items-center justify-between gap-4">
+                    <%
+                        for (OrderDetails od : bookOrder) {
+                            Book book = bookMap.get(od.getBookID());
+                    %>
+                    <a href="bookDetails.jsp?bookID=<%= od.getBookID()%>">
+                        <div class="bg-white shadow-lg rounded-lg w-fit p-2">
+                            <img src="assets/images/photo-1531988042231-d39a9cc12a9a.jpeg" alt="Book Cover"
+                                 class="w-full h-64 object-cover rounded-lg">
+                            <div class="p-4">
+                                <h2 class="text-xl font-bold mb-2"><%= book.getTitle()%>
+                                </h2>
+                                <p class="text-gray-600 mb-2">Price:&#8377; <%= book.getPrice()%>
+                                </p>
+                                <p class="text-gray-600 mb-2">Quantity: <%= od.getQuantity()%>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <%}%>
+                </div>
+            <%}%>
+
+        </div>
     </div>
-</div>
+<%}%>
 
 </body>
 </html>

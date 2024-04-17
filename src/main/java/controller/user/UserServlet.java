@@ -1,4 +1,4 @@
-package controller;
+package controller.user;
 
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
@@ -36,13 +36,12 @@ public class UserServlet extends HttpServlet {
                 session.setAttribute("user", registerUser);
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.getWriter().write("success");
-
                 resp.sendRedirect("dashboard.jsp");
             } else {
+                System.out.println("Registration failed");
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                resp.getWriter().write("Internal server error. Please try again after some time");
-
-                resp.sendRedirect("login.jsp");
+                RequestDispatcher rd = req.getRequestDispatcher("registration.jsp");
+                rd.forward(req, resp);
             }
         } else if(action.equals("login")){
             String email = req.getParameter("email");
@@ -57,17 +56,12 @@ public class UserServlet extends HttpServlet {
                     resp.setStatus(HttpServletResponse.SC_OK);
                     resp.getWriter().write("success");
 
-//                    RequestDispatcher dispatcher = req.getRequestDispatcher("dashboard.jsp");
-//                    dispatcher.forward(req, resp);
                     resp.sendRedirect("dashboard.jsp");
                 } else {
                     System.out.println("login failed");
                     resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                    resp.getWriter().write("Invalid Credentials");
-
-//                    RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
-//                    dispatcher.forward(req, resp);
-                    resp.sendRedirect("login.jsp");
+                    RequestDispatcher rd = req.getRequestDispatcher("login.jsp");
+                    rd.forward(req,resp);
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);

@@ -10,7 +10,7 @@
 
     <servlet>
         <servlet-name>Register</servlet-name>
-        <servlet-class>controller.UserServlet</servlet-class>
+        <servlet-class>controller.user.UserServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
@@ -18,8 +18,35 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>Forgot Password</servlet-name>
+        <servlet-class>controller.user.ForgotPassword</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Forgot Password</servlet-name>
+        <url-pattern>/forgotPassword</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>OTP</servlet-name>
+        <servlet-class>controller.user.OTPServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OTP</servlet-name>
+        <url-pattern>/otp</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Reset Password</servlet-name>
+        <servlet-class>controller.user.ResetPassword</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Reset Password</servlet-name>
+        <url-pattern>/resetPassword</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>Login</servlet-name>
-        <servlet-class>controller.UserServlet</servlet-class>
+        <servlet-class>controller.user.UserServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
