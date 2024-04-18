@@ -6,6 +6,8 @@ import sql.constants.SQLQuery;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class UserDAO {
@@ -152,6 +154,21 @@ public class UserDAO {
         PreparedStatement ps = connection.prepareStatement(q);
         ps.setInt(1, userID);
         int rowsAffected = ps.executeUpdate();
+    }
+
+
+    public static List<User> getAllUser() throws SQLException {
+        List<User> users = new ArrayList<>();
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery(SQLQuery.GET_ALL_USER);
+        while (rs.next()){
+            int userID = rs.getInt("userID");
+            String email = rs.getString("email");
+            String userName = rs.getString("username");
+            User user = new User(userID,userName,email);
+            users.add(user);
+        }
+        return users;
     }
 
 }

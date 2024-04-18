@@ -4,6 +4,12 @@ public class SQLQuery {
     public static String REGISTER_USER = "INSERT INTO user (username, email, password) VALUES (?, ?, ?)";
     public static String LOGIN_USER = "SELECT userID, username, email, password FROM user where email = ? AND password = ?";
 
+    public static String GET_ALL_USER = "SELECT userID, username, email from user";
+
+    // admin
+
+    public static String LOGIN_ADMIN = "SELECT adminID, username, email FROM admin_table where email = ? AND password = ?";
+
     //order
     public static String INSERT_ORDER_SUMMARY = "INSERT INTO order_summary (userID, totalAmount) VALUES (?, ?)";
     public static String INSERT_ORDER_DETAIL = "INSERT INTO order_details (orderID, bookID, quantity) VALUES (?, ?, ?)";

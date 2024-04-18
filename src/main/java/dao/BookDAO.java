@@ -14,7 +14,7 @@ public class BookDAO {
         con = DBConnection.connect(context);
     }
 
-    public static boolean insertBook(Book book) throws SQLException{
+    public static boolean addBook(Book book) throws SQLException{
         int record = 0;
         try{
             PreparedStatement ps = con.prepareStatement(SQLQuery.INSERT_BOOK);

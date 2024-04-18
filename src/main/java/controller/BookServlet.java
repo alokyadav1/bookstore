@@ -1,6 +1,7 @@
 package controller;
 
 import dao.BookDAO;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,20 +36,22 @@ public class BookServlet extends HttpServlet {
         Book book = new Book(price, rating, title, desc, author, ISBN);
         boolean success = false;
         try {
-            success = BookDAO.insertBook(book);
+            success = BookDAO.addBook(book);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         System.out.println("success: " + success);
         if (success){
             System.out.println("Book added successfully");
-            resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write("success");
+            resp.setStatus(HttpServletResponse.SC_CREATED);
         } else {
             System.out.println("Book insertion failed.");
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().write("failed");
         }
+
+        RequestDispatcher rd = req.getRequestDispatcher("admin/book.jsp");
+        rd.forward(req,resp);
     }
 
     @Override

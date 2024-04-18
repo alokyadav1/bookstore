@@ -59,9 +59,15 @@
                                 type="password" name="password" id="password"
                                 placeholder="Password" required/>
                         </div>
-                        <div class="form-group">
-                            <a href="forgotPassword.jsp">forgot password?</a>
+                        <div style="display: flex; justify-content: space-between; align-items: center">
+                            <div>
+                                <a href="forgotPassword.jsp">forgot password?</a>
+                            </div>
+                            <div>
+                                <a href="admin/adminLogin.jsp">Admin Login</a>
+                            </div>
                         </div>
+
                         <div class="form-group form-button">
                             <input type="submit" name="signin" id="signin"
                                    class="form-submit" value="Log in"/>
