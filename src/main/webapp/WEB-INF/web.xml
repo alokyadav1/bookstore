@@ -88,6 +88,15 @@
         <servlet-name>Book</servlet-name>
         <url-pattern>/book</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Edit Book</servlet-name>
+        <servlet-class>controller.BookServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Edit Book</servlet-name>
+        <url-pattern>/editBook</url-pattern>
+    </servlet-mapping>
     
     <servlet>
         <servlet-name>Cart</servlet-name>
@@ -118,15 +127,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>add to cart</servlet-name>
-        <servlet-class>controller.cart.AddToCartServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>add to cart</servlet-name>
-        <url-pattern>/addToCart</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>remove from cart</servlet-name>
         <servlet-class>controller.cart.RemoveFromCartServlet</servlet-class>
     </servlet>
@@ -145,9 +145,34 @@
     </servlet-mapping>
 
 
+    <servlet>
+        <servlet-name>checkout session</servlet-name>
+        <servlet-class>controller.CheckOutSessionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>checkout session</servlet-name>
+        <url-pattern>/checkout-session</url-pattern>
+    </servlet-mapping>
 
-    
-    
+    <servlet>
+        <servlet-name>create cart checkout session</servlet-name>
+        <servlet-class>controller.CheckoutCartSessionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>create cart checkout session</servlet-name>
+        <url-pattern>/create-cart-checkout-session</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Apply Coupon</servlet-name>
+        <servlet-class>controller.coupon.CouponServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Apply Coupon</servlet-name>
+        <url-pattern>/apply-coupon</url-pattern>
+    </servlet-mapping>
+
+
     <context-param>
         <param-name>DB_URL</param-name>
         <param-value>jdbc:mysql://localhost:3306/bookstore</param-value>

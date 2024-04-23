@@ -2,17 +2,20 @@
 <%@ page import="models.CartDetails" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.time.LocalDate" %>
+<%@ page import="models.Book" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
     User user = (User) session.getAttribute("user");
+
     List<CartDetails> carts = (List<CartDetails>) session.getAttribute("carts");
+    Book book = (Book) session.getAttribute("book");
 %>
 
 <%
     if (user == null){
         response.sendRedirect("login.jsp");
-    } else if(carts == null || carts.isEmpty()){
+    } else if((carts == null || carts.isEmpty()) && (book == null)){
         response.sendRedirect("dashboard.jsp");
     }
 %>
@@ -89,13 +92,22 @@
             </thead>
             <tbody>
             <!-- Example items, replace with your actual invoice items -->
-            <%for(CartDetails cart : carts){%>
-            <tr>
-                <td class="border px-4 py-2 capitalize"><%= cart.getTitle()%></td>
-                <td class="border px-4 py-2"><%= cart.getQuantity()%></td>
-                <td class="border px-4 py-2">&#8377;<%= cart.getPrice()%> </td>
-            </tr>
-            <% totalAmount += (cart.getQuantity() * cart.getPrice());%>
+            <%if (carts != null){%>
+                <%for(CartDetails cart : carts){%>
+                <tr>
+                    <td class="border px-4 py-2 capitalize"><%= cart.getTitle()%></td>
+                    <td class="border px-4 py-2"><%= cart.getQuantity()%></td>
+                    <td class="border px-4 py-2">&#8377;<%= cart.getPrice()%> </td>
+                </tr>
+                <% totalAmount += (cart.getQuantity() * cart.getPrice());%>
+                <%}%>
+            <%}else if (book != null){%>
+                <tr>
+                    <td class="border px-4 py-2 capitalize"><%= book.getTitle()%></td>
+                    <td class="border px-4 py-2"><%= book.getQuantity()%></td>
+                    <td class="border px-4 py-2">&#8377;<%= book.getPrice()%> </td>
+                </tr>
+                <% totalAmount += (book.getQuantity() * book.getPrice());%>
             <%}%>
             </tbody>
         </table>

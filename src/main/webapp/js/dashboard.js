@@ -15,6 +15,8 @@ function updateCart(bookID, title, price, desc, rating, author, isbn) {
 }
 
 
+
+
 function addBookToCart(bookID, title, price, desc, rating, author, isbn) {
     let serverResponse = null;
     $.ajax({
@@ -45,6 +47,10 @@ function addBookToCart(bookID, title, price, desc, rating, author, isbn) {
     return JSON.parse(serverResponse);
 }
 
+
+
 function redirectToBookDetails(bookID){
     window.location.href = "bookDetails.jsp?bookID="+bookID;
 }
+
+

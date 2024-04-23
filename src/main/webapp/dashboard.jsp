@@ -15,15 +15,15 @@
 %>
 
 <%
-    if(session.getAttribute("books") == null){
+    if (session.getAttribute("books") == null) {
         RequestDispatcher rd = request.getRequestDispatcher("/book");
         rd.include(request, response);
     }
 
-    if(user != null && session.getAttribute("carts") == null){
+    if (user != null && session.getAttribute("carts") == null) {
         request.setAttribute("userID", user.getUserID());
         RequestDispatcher cartDispatcher = request.getRequestDispatcher("/cart");
-        cartDispatcher.include(request,response);
+        cartDispatcher.include(request, response);
     }
 %>
 
@@ -35,12 +35,11 @@
 
 <%
     List<Integer> bookIdList = new ArrayList<>();
-    if (carts != null){
-        for(CartDetails cart : carts){
+    if (carts != null) {
+        for (CartDetails cart : carts) {
             bookIdList.add(cart.getId());
         }
     }
-
 
 
 %>
@@ -91,6 +90,44 @@
             rel="stylesheet" type="text/css"/>
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/dashboard.css" rel="stylesheet"/>
+    <script src="js/dashboard.js" ></script>
+    <script>
+        function incrementQuantity(bookID) {
+            const quantity = document.getElementsByClassName("quantity-" + bookID);
+            console.log(quantity)
+            for (let i = 0; i < quantity.length; i++) {
+                let element = quantity[i];
+                element.innerText = parseInt(element.innerText) + 1;
+            }
+
+        }
+
+        function decrementQuantity(bookID) {
+            const quantity = document.getElementsByClassName("quantity-" + bookID);
+            for (let i = 0; i < quantity.length; i++) {
+                let element = quantity[i];
+                if (element.innerText > 1)
+                    element.innerText = parseInt(element.innerText) - 1;
+            }
+        }
+
+        function createCheckOutSession(title, price, bookID){
+            const quantityContainer = document.getElementsByClassName("quantity-"+bookID)[0]
+            let quantity = quantityContainer.innerText;
+            if (quantity == null) quantity = 1;
+            $.ajax({
+                type: "POST",
+                url: "checkout-session",
+                data: {bookID:bookID,title:title,price:price,quantity:quantity},
+                success:function (res){
+                    window.location.href = "checkout.jsp"
+                },
+                error:function (error){
+                    alert("unable to create session")
+                }
+            })
+        }
+    </script>
 
 </head>
 <body>
@@ -142,10 +179,10 @@
                     <c:otherwise>
                         <a href="cart.jsp" class="cart-container mr-10">
                             <i class="fa-solid fa-cart-shopping text-2xl "></i>
-                            <% if(carts != null && !carts.isEmpty()){%>
-                                <span id="cart-size"><%= carts.size()%></span>
+                            <% if (carts != null && !carts.isEmpty()) {%>
+                            <span id="cart-size"><%= carts.size()%></span>
                             <%} else {%>
-                                <span id="cart-size">0</span>
+                            <span id="cart-size">0</span>
                             <%}%>
                         </a>
                         <form action="logout" method="post">
@@ -210,39 +247,66 @@
                 <div class="item-wrapper">
                     <div class="p-2 cursor-pointer" onclick="redirectToBookDetails(<%= book.getId()%>)">
                         <div class="item-img">
-                            <img src="assets/images/photo-1531988042231-d39a9cc12a9a.jpeg" alt="Mobirise Website Builder">
+                            <img src="assets/images/photo-1531988042231-d39a9cc12a9a.jpeg"
+                                 alt="Mobirise Website Builder">
                         </div>
                         <div>
                             <h5 class="item-title mbr-fonts-style display-5 capitalize">
                                 <strong><%= book.getTitle()%>
                                 </strong>
                             </h5>
-                            <h6 class="item-subtitle mbr-fonts-style display-7">Rs.<%= book.getPrice()%></h6>
+                            <h6 class="item-subtitle mbr-fonts-style display-7">Rs.<%= book.getPrice()%>
+                            </h6>
                         </div>
                     </div>
                     <div class="p-3 item-content">
                         <div class="flex flex-wrap justify-between items-center item-footer">
                             <% if (bookIdList.contains(book.getId())) {%>
-                                <a href="cart.jsp" class="bg-orange-700 p-3 rounded-full text-lg text-white">
-                                    Go To Cart
-                                </a>
+                            <div class="flex items-center">
+                                <button class="bg-gray-200 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center mr-2"
+                                        onclick="decrementQuantity(<%= book.getId()%>)">-
+                                </button>
+                                <span class="quantity-<%= book.getId()%>">1 </span>
+                                <button class="bg-gray-200 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center ml-2"
+                                        onclick="incrementQuantity(<%= book.getId()%>)">+
+                                </button>
+                            </div>
+                            <button onclick="createCheckOutSession('<%= book.getTitle()%>',<%= book.getPrice()%>,<%= book.getId()%>)"
+                                    class="bg-blue-700 p-3 rounded-full text-lg text-white">Buy Now
+                            </button>
+
                             <%} else {%>
-                                <%if(user != null){%>
-                                    <button class="bg-blue-700 p-3 rounded-full text-lg text-white"
-                                            onclick="updateCart('<%= book.getId()%>', '<%= book.getTitle()%>', '<%= book.getPrice()%>', '<%= book.getDescription()%>', '<%= book.getRating()%>', '<%= book.getAuthor()%>', '<%= book.getISBN()%>')"
-                                            id="add-to-cart-<%= book.getId()%>"
-                                    >
-                                        Add To Cart
-                                    </button>
-                                <%} else {%>
-                                    <a href="login.jsp" class="bg-blue-700 p-3 rounded-full text-lg text-white" style="text-underline: none">Add To Cart</a>
-                                <%}%>
-                                <a href="cart.jsp" class="bg-orange-700 p-3 rounded-full text-lg text-white" id="go-to-cart-<%= book.getId()%>" hidden="hidden">
-                                    Go To Cart
-                                </a>
+                            <%if (user != null) {%>
+                            <button class="bg-blue-700 p-3 rounded-full text-lg text-white"
+                                    onclick="updateCart('<%= book.getId()%>', '<%= book.getTitle()%>', '<%= book.getPrice()%>', '<%= book.getDescription()%>', '<%= book.getRating()%>', '<%= book.getAuthor()%>', '<%= book.getISBN()%>')"
+                                    id="add-to-cart-<%= book.getId()%>"
+                            >
+                                Add To Cart
+                            </button>
+                            <button onclick="createCheckOutSession('<%= book.getTitle()%>',<%= book.getPrice()%>,<%= book.getId()%>)"
+                                    class="bg-blue-700 p-3 rounded-full text-lg text-white">Buy Now
+                            </button>
+
+                            <%} else {%>
+                            <a href="login.jsp" class="bg-blue-700 p-3 rounded-full text-lg text-white"
+                               style="text-underline: none">Add To Cart</a>
+                            <a href="login.jsp">
+                                <button class="bg-blue-700 p-3 rounded-full text-lg text-white">Buy Now</button>
+                            </a>
                             <%}%>
 
-                            <button class="bg-blue-700 p-3 rounded-full text-lg text-white">Buy Now</button>
+                            <div class="flex items-center" id="go-to-cart-<%= book.getId()%>" hidden="hidden">
+                                <button class="bg-gray-200 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center mr-2"
+                                        onclick="decrementQuantity(<%= book.getId()%>)">-
+                                </button>
+                                <span class="quantity-<%= book.getId()%>">1</span>
+                                <button class="bg-gray-200 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center ml-2"
+                                        onclick="incrementQuantity(<%= book.getId()%>)">+
+                                </button>
+                            </div>
+                            <%}%>
+
+
                         </div>
                     </div>
 

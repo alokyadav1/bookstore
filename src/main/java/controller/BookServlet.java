@@ -23,23 +23,38 @@ public class BookServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String[] path = req.getRequestURI().split("/");
+        String action = path[path.length-1];
 
         String title = req.getParameter("title");
         String desc = req.getParameter("description");
         String author = req.getParameter("author");
         String ISBN = req.getParameter("isbn");
         double price = Double.parseDouble(req.getParameter("price"));
-        double rating = Double.parseDouble(req.getParameter("rating"));
+
 
         System.out.println("title: " + title);
 
-        Book book = new Book(price, rating, title, desc, author, ISBN);
+
         boolean success = false;
-        try {
-            success = BookDAO.addBook(book);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        if (action.equals("book")){
+            double rating = Double.parseDouble(req.getParameter("rating"));
+            Book book = new Book(price, rating, title, desc, author, ISBN);
+            try {
+                success = BookDAO.addBook(book);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }else{
+            int bookID = Integer.parseInt(req.getParameter("bookID"));
+            Book book = new Book(bookID,price,title,desc,author,ISBN);
+            try {
+                success = BookDAO.updateBook(book);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
+
         System.out.println("success: " + success);
         if (success){
             System.out.println("Book added successfully");
@@ -49,9 +64,8 @@ public class BookServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().write("failed");
         }
+        resp.sendRedirect("admin/book.jsp");
 
-        RequestDispatcher rd = req.getRequestDispatcher("admin/book.jsp");
-        rd.forward(req,resp);
     }
 
     @Override

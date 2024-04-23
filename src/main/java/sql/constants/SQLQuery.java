@@ -21,7 +21,7 @@ public class SQLQuery {
 
     //cart
     public static String ADD_TO_CART = "INSERT INTO cart(userID, bookID, quantity) values(?,?,?)";
-    public static String REMOVE_FROM_CART = "DELETE FROM cart WHERE bookID = ?";
+    public static String REMOVE_FROM_CART = "DELETE FROM cart WHERE bookID = ? AND userID = ?";
     public static String GET_CART_ITEM = "SELECT book.bookID, title, description, author, price, ISBN,                                          rating, quantity " +
                                             "FROM book INNER JOIN cart " +
                                             "ON book.bookID = cart.bookID "+

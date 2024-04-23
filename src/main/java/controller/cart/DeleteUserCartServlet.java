@@ -39,7 +39,6 @@ public class DeleteUserCartServlet extends HttpServlet {
     }
 
     // remove user's cart from session
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("removing cart session...");

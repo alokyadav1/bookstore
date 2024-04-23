@@ -34,18 +34,20 @@ const decrementQuantity = (bookID,price) => {
 }
 
 
-const removeFromCart = (bookID, price) => {
+const removeFromCart = (bookID, price, userID) => {
+    console.log("userID: ", userID)
     $.ajax({
         type: "POST",
         url:"removeFromCart",
         data:{
-            bookID:bookID
+            bookID:bookID,
+            userID:userID
         },
         success: function(response){
-            console.log("Servlet response: " + JSON.stringify(response));
+            console.log("Servlet Success response: " + JSON.stringify(response));
         },
         error: function(response){
-            console.log("Servlet response: " + JSON.stringify(response));
+            console.log("Servlet error response: " + JSON.stringify(response));
         }
     })
 
@@ -64,29 +66,4 @@ const removeFromCart = (bookID, price) => {
     // update total amount
     const totalAmount = document.getElementById("totalAmount");
     totalAmount.innerText = parseInt(totalAmount.innerText) - price;
-}
-
-
-
-// currently no usage
-function redirectToInvoice(cart){
-    // Create a new XMLHttpRequest object
-    const xhr = new XMLHttpRequest();
-
-    // Set up the request
-    xhr.open("POST", "invoice.jsp", true);
-
-    // Set the content type header
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    // Define the callback function to handle the response
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            // Once the data has been sent, navigate to the "invoice.jsp" page
-            window.location.href = "invoice.jsp";
-        }
-    };
-
-    // Send the JSON data
-    xhr.send(JSON.stringify(cart));
 }

@@ -72,6 +72,19 @@ public class BookDAO {
         return books;
     }
 
+    public static boolean updateBook(Book book) throws SQLException {
+        String q = "UPDATE book set title=?,description=?,author=?,ISBN=?,price=? WHERE bookID=?";
+        PreparedStatement ps = con.prepareStatement(q);
+        ps.setString(1, book.getTitle());
+        ps.setString(2,book.getDescription());
+        ps.setString(3, book.getAuthor());
+        ps.setString(4,book.getISBN());
+        ps.setDouble(5,book.getPrice());
+        ps.setInt(6, book.getId());
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected > 0;
+    }
+
     public static boolean deleteBook(int bookID) throws SQLException{
         int rowsAffected = 0;
         try{
@@ -83,4 +96,5 @@ public class BookDAO {
         }
         return rowsAffected > 0;
     }
+
 }

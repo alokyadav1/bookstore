@@ -36,9 +36,10 @@ public class CartDAO {
         return rowsAffected > 0;
     }
 
-    public static boolean removeFromCart(int bookID) throws SQLException {
+    public static boolean removeFromCart(int userID, int bookID) throws SQLException {
         PreparedStatement ps = con.prepareStatement(SQLQuery.REMOVE_FROM_CART);
         ps.setInt(1, bookID);
+        ps.setInt(2, userID);
         int rowsAffected = ps.executeUpdate();
         return rowsAffected > 0;
     }
@@ -46,7 +47,6 @@ public class CartDAO {
     public static List<CartDetails> getCartItems(int userID) throws SQLException {
         List<CartDetails> cartDetails = new ArrayList<>();
         PreparedStatement ps = con.prepareStatement(SQLQuery.GET_CART_ITEM);
-        // complete this.
         ps.setInt(1, userID);
         ResultSet rs =  ps.executeQuery();
         while(rs.next()){

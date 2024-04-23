@@ -22,6 +22,8 @@ public class CartServlet extends HttpServlet {
         CartDAO.setConnection(getServletContext());
     }
 
+
+    // add to cart
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int bookID = Integer.parseInt(req.getParameter("bookID"));
@@ -69,6 +71,8 @@ public class CartServlet extends HttpServlet {
 
     }
 
+
+    // fetch cart of particular user
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -94,10 +98,11 @@ public class CartServlet extends HttpServlet {
 
         } else{
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-
         }
     }
 
+
+    // update cart of particular User
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -122,29 +127,4 @@ public class CartServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        System.out.println("userID: " + req.getParameter("userID"));
-//        int userID;
-//        if (req.getParameter("userID") != null){
-//            userID = Integer.parseInt(req.getParameter("userID"));
-//            boolean success = false;
-//            try {
-//                success = CartDAO.deleteCart(userID);
-//            } catch (SQLException e) {
-//                throw new RuntimeException(e);
-//            }
-//            if (success){
-//                System.out.println("Delete successfully");
-//                resp.setStatus(HttpServletResponse.SC_OK);
-//            } else {
-//                System.out.println("Delete failed.");
-//                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            }
-//        } else {
-//            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//        }
-
-
-    }
 }

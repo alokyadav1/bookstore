@@ -58,4 +58,21 @@ public class AdminServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int bookID = Integer.parseInt(req.getParameter("bookID"));
+        boolean bookDeleted = false;
+        try {
+            bookDeleted = BookDAO.deleteBook(bookID);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        if (bookDeleted){
+            resp.setStatus(HttpServletResponse.SC_ACCEPTED);
+        }else {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+        resp.sendRedirect("book.jsp");
+    }
 }

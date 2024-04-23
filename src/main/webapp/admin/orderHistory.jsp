@@ -8,14 +8,14 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    if (session.getAttribute("admin") == null){
+    if (session.getAttribute("admin") == null) {
         response.sendRedirect("adminLogin.jsp");
     }
 %>
 <%
-    if (session.getAttribute("orderHistory") == null){
+    if (session.getAttribute("orderHistory") == null) {
         RequestDispatcher rd = request.getRequestDispatcher("getOrder");
-        rd.include(request,response);
+        rd.include(request, response);
     }
     List<OrderHistory> orderHistory = (List<OrderHistory>) session.getAttribute("orderHistory");
 
@@ -33,7 +33,7 @@
 <body class="bg-gray-100 font-sans">
 <div class="flex h-screen">
     <!-- Sidebar -->
-    <%@include file="sidebar.jsp"%>
+    <%@include file="sidebar.jsp" %>
 
     <!-- Main Content -->
     <div class="flex-1 flex flex-col m-1 rounded-xl p-2 overflow-auto h-screen">
@@ -41,9 +41,9 @@
             <h1 class="text-3xl font-semibold text-gray-800 mb-8">Order Management</h1>
             <!-- Order Table -->
             <div class="overflow-x-auto rounded-lg">
-                <table class="table-auto w-full border-collapse border border-gray-200 rounded-lg">
+                <table class="table-auto w-full shadow-2xl border-collapse border border-gray-200 bg-white rounded-lg font-sans">
                     <thead class="bg-gray-200">
-                    <tr >
+                    <tr class="font-sans">
                         <th class="px-4 py-2">Order ID</th>
                         <th class="px-4 py-2">User ID</th>
                         <th class="px-4 py-2">Username</th>
@@ -54,15 +54,30 @@
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                    <%for (OrderHistory order : orderHistory){%>
-                    <tr class="text-center">
-                        <td class="px-4 py-2"><%= order.getOrderID()%></td>
-                        <td class="px-4 py-2"><%= order.getUserID()%></td>
-                        <td class="px-4 py-2"><%= order.getUsername()%></td>
-                        <td class="px-4 py-2"><%= order.getEmail()%></td>
-                        <td class="px-4 py-2"><%= order.getOrderDate()%></td>
-                        <td class="px-4 py-2"><%= order.getBookBought()%></td>
-                        <td class="px-4 py-2">&#8377;<%= order.getTotalAmount()%></td>
+                    <%for (OrderHistory order : orderHistory) {%>
+                    <tr class="text-center font-sans hover:bg-gray-100 cursor-pointer"
+                        onclick="window.location.href='orderDetail.jsp'">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                            <%= order.getOrderID()%>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                            <%= order.getUserID()%>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                            <%= order.getUsername()%>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                            <%= order.getEmail()%>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                            <%= order.getOrderDate()%>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                            <%= order.getBookBought()%>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                            &#8377;<%= order.getTotalAmount()%>
+                        </td>
 
                     </tr>
                     <%}%>

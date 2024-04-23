@@ -45,9 +45,9 @@
 
             <!-- User Table -->
             <div class="overflow-x-auto rounded-lg">
-                <table class="table-auto w-full border-collapse border border-gray-200">
+                <table class="table-auto w-full border-collapse border border-gray-200 bg-white">
                     <thead class="bg-gray-200 rounded-lg">
-                    <tr>
+                    <tr class="font-sans" >
                         <th class="px-4 py-2">ID</th>
                         <th class="px-4 py-2">UserName</th>
                         <th class="px-4 py-2">Email</th>
@@ -55,10 +55,10 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                     <%for (User user : users){%>
-                    <tr>
-                        <td class="px-4 py-2 text-center"><%= user.getUserID()%></td>
-                        <td class="px-4 py-2 text-center capitalize"><%= user.getUsername()%></td>
-                        <td class="px-4 py-2 text-center"><%= user.getEmail()%></td>
+                    <tr class="font-sans">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 text-center"><%= user.getUserID()%></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 text-center capitalize"><%= user.getUsername()%></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 text-center"><%= user.getEmail()%></td>
                     </tr>
                     <%}%>
                     </tbody>

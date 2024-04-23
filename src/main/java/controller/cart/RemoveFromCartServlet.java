@@ -18,19 +18,22 @@ import java.util.List;
 public class RemoveFromCartServlet extends HttpServlet {
     @Override
 
-    // removes item from cart
+    // removes item(book) from cart
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("userID: " + req.getParameter("userID"));
+        int userID = Integer.parseInt(req.getParameter("userID"));
         int bookID = Integer.parseInt(req.getParameter("bookID"));
         boolean success = false;
         try {
-            success = CartDAO.removeFromCart(bookID);
+            success = CartDAO.removeFromCart(userID,bookID);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        if (success){
+        if (success){ // remove book from session also.
+            System.out.println("success");
             HttpSession session = req.getSession();
             List<CartDetails> carts = (List<CartDetails>) session.getAttribute("carts");
-            carts.removeIf((cart) -> cart.getId() == bookID);
+            carts.removeIf((book) -> book.getId() == bookID);
             session.setAttribute("carts", carts);
             resp.setStatus(HttpServletResponse.SC_OK);
         } else {

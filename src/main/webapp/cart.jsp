@@ -12,35 +12,33 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    if (session.getAttribute("user") == null){
+        response.sendRedirect("login.jsp");
+    }
+%>
+<%
     User user = (User) session.getAttribute("user");
     List<CartDetails> carts = (List<CartDetails>) session.getAttribute("carts");
-
-
-
-    String jsonData = null;
-
-    // convert java list to js object.
-    if (carts != null){
-        JSONArray jsonArray = new JSONArray();
-        for (CartDetails cartDetails : carts) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("bookID", cartDetails.getId());
-            jsonObject.put("quantity", cartDetails.getQuantity());
-            jsonObject.put("title", cartDetails.getTitle());
-            jsonObject.put("price", cartDetails.getPrice());
-            jsonArray.put(jsonObject);
-        }
-        jsonData = jsonArray.toString();
-    }
-
-
-
 %>
 <html>
 <head>
     <title>Cart</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function createCartCheckoutSession(){
+            $.ajax({
+                type: "POST",
+                url: "create-cart-checkout-session",
+                success:function (res){
+                    window.location.href = "checkout.jsp"
+                },
+                error:function (error){
+                    alert("unable to create session")
+                }
+            })
+        }
+    </script>
 </head>
 <body>
 <div class="container mx-auto px-4 py-8">
@@ -73,7 +71,7 @@
                             onclick="incrementQuantity(<%= cart.getId() %>,<%= cart.getPrice() %>)">+
                     </button>
                 </div>
-                <button class="bg-red-200 text-white bg-red-500 font-bold rounded-lg ml-2 p-2" onclick="removeFromCart(<%= cart.getId()%>, <%= cart.getPrice()%>)">
+                <button class="bg-red-200 text-white bg-red-500 font-bold rounded-lg ml-2 p-2" onclick="removeFromCart(<%= cart.getId()%>, <%= cart.getPrice()%>, <%= user.getUserID()%>)">
                     Remove
                 </button>
             </div>
@@ -130,11 +128,9 @@
         </table>
     </div>
 
-
-    <!-- Buy Button -->
     <div class="flex justify-center mt-8">
         <button class="bg-blue-700 text-white font-bold py-4 px-6 rounded-2xl hover:bg-blue-600"
-                onclick='addOrderDeleteCart(<%= user.getUserID()%>,<%= totalAmount%>,<%= jsonData%>)'>
+                onclick="createCartCheckoutSession()">
             Buy Now
         </button>
     </div>
@@ -142,6 +138,6 @@
 </div>
 
 <script src="js/cart.js"></script>
-<script src="js/order.js"></script>
+
 </body>
 </html>
