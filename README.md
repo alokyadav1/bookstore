@@ -33,15 +33,5 @@ Welcome to the Bookstore project! This repository contains the code for a simple
 - **Database**: MySQL
 - **IDE**: IntelliJ Ultimate
 
-## Getting Started
-
-To get started with the Bookstore project, follow these steps:
-
-1. Clone this repository to your local machine.
-`git clone https://github.com/yourusername/bookstore.git`
-2. Open the project in IntelliJ IDEA Ultimate.
-3. Set up a MySQL database and configure the database connection in the project.
-4. Run the application and access it through your preferred web browser.
-
 Happy reading! 📚
 
